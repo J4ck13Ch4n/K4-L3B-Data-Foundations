@@ -7,6 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from src.agent import KnowledgeBaseAgent
+from src.chunking import SentenceChunker
 from src.embeddings import (
     EMBEDDING_PROVIDER_ENV,
     GEMINI_EMBEDDING_MODEL,
@@ -47,13 +48,18 @@ def load_documents_from_files(file_paths: list[str]) -> list[Document]:
             continue
 
         content = path.read_text(encoding="utf-8")
-        documents.append(
-            Document(
-                id=path.stem,
-                content=content,
-                metadata={"source": str(path), "extension": path.suffix.lower()},
+        chunker = SentenceChunker(max_sentences_per_chunk=2)
+        chunks = chunker.chunk(content)
+        if not chunks:
+            continue
+        for idx, chunk_text in enumerate(chunks):
+            documents.append(
+                Document(
+                    id=f"{path.stem}#{idx}",
+                    content=chunk_text,
+                    metadata={"source": str(path), "extension": path.suffix.lower(), "chunk_index": idx},
+                )
             )
-        )
 
     return documents
 

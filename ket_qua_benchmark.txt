@@ -1,0 +1,96 @@
+=== bench.py — strategy=sentence chunk_size=350 overlap=40 ===
+Documents: 7 | Chunks loaded: 23
+Embedding backend: gemini-embedding-001
+
+--- Q1 ---
+EN: How long does a buyer have to request a return or refund?
+VI: Người mua có bao lâu để gửi yêu cầu trả hàng hoặc hoàn tiền?
+filter: {'audience': 'buyer'}
+  [1] score=0.8207 doc_id=buyer-return-eligibility-deadline :: # Điều kiện và thời hạn yêu cầu trả hàng/hoàn tiền dành cho người mua  Người mua chỉ có th...
+  [2] score=0.8070 doc_id=buyer-return-reasons-refund-timeline :: # Lý do trả hàng/hoàn tiền và thời gian phản hồi của Shopee  Shopee hiện chưa hỗ trợ yêu c...
+  [3] score=0.7843 doc_id=buyer-return-reasons-refund-timeline :: Yêu cầu trả hàng/hoàn tiền sẽ được Shopee phản hồi trong vòng **3-5 ngày làm việc** (không...
+  gold_doc='buyer-return-eligibility-deadline' doc_in_top3=True evidence_in_context=True -> score=2/2
+
+--- Q2 ---
+EN: What must a seller do after a buyer opens a return request?
+VI: Người bán phải làm gì sau khi người mua tạo yêu cầu trả hàng?
+filter: {'audience': 'seller'}
+  [1] score=0.7865 doc_id=seller-refund-response-deadline :: Người bán **không phải** chịu chi phí vận chuyển hoàn trả trong các trường hợp: yêu cầu tr...
+  [2] score=0.7823 doc_id=seller-refund-response-deadline :: # Thời hạn phản hồi và trách nhiệm chi phí vận chuyển hoàn trả của người bán  Khi nhận đượ...
+  [3] score=0.7611 doc_id=seller-refund-response-deadline :: Nếu người bán cho rằng sản phẩm hoàn trả không đủ điều kiện được hoàn (ví dụ bị hư hỏng, t...
+  gold_doc='seller-refund-response-deadline' doc_in_top3=True evidence_in_context=True -> score=2/2
+
+--- Q3 ---
+EN: When is the buyer's refund released after a return is approved?
+VI: Khi nào người mua nhận được tiền hoàn sau khi yêu cầu trả hàng được chấp thuận?
+filter: {'audience': 'buyer'}
+  [1] score=0.7957 doc_id=buyer-refund-processing-review :: Tiền hoàn chỉ được giải ngân cho người mua khi rơi vào một trong các trường hợp sau: người...
+  [2] score=0.7841 doc_id=buyer-refund-processing-review :: # Quy trình Shopee xét duyệt yêu cầu trả hàng/hoàn tiền  Tùy từng trường hợp, yêu cầu trả ...
+  [3] score=0.7825 doc_id=buyer-refund-processing-review :: Nếu Shopee yêu cầu bổ sung bằng chứng, người mua cần gửi đúng hạn quy định trong thông báo...
+  gold_doc='buyer-refund-processing-review' doc_in_top3=True evidence_in_context=True -> score=2/2
+
+--- Q4 ---
+EN: Which reasons and evidence can support a return or refund claim?
+VI: Những lý do và bằng chứng nào có thể hỗ trợ yêu cầu trả hàng hoặc hoàn tiền?
+filter: None
+  [1] score=0.7790 doc_id=buyer-return-eligibility-deadline :: # Điều kiện và thời hạn yêu cầu trả hàng/hoàn tiền dành cho người mua  Người mua chỉ có th...
+  [2] score=0.7668 doc_id=buyer-refund-processing-review :: Shopee đánh giá tình trạng hàng hoàn trả dựa trên lý do khiếu nại và bằng chứng cung cấp —...
+  [3] score=0.7660 doc_id=buyer-return-reasons-refund-timeline :: Yêu cầu trả hàng/hoàn tiền sẽ được Shopee phản hồi trong vòng **3-5 ngày làm việc** (không...
+  gold_doc='buyer-return-reasons-refund-timeline' doc_in_top3=True evidence_in_context=True -> score=1/2
+
+--- Q5 ---
+EN: Who pays return shipping and what should the seller do with the parcel?
+VI: Ai trả phí vận chuyển hoàn trả và người bán cần làm gì với gói hàng?
+filter: {'audience': 'seller'}
+  [1] score=0.8074 doc_id=seller-refund-response-deadline :: Người bán **không phải** chịu chi phí vận chuyển hoàn trả trong các trường hợp: yêu cầu tr...
+  [2] score=0.7800 doc_id=seller-refund-response-deadline :: # Thời hạn phản hồi và trách nhiệm chi phí vận chuyển hoàn trả của người bán  Khi nhận đượ...
+  [3] score=0.7735 doc_id=seller-refund-response-deadline :: Sau thời hạn này mà Shopee không nhận được phản hồi, Shopee hiểu rằng người bán hoàn toàn ...
+  gold_doc='seller-refund-response-deadline' doc_in_top3=True evidence_in_context=True -> score=2/2
+
+TOTAL SCORE: 9/10
+
+=== A/B on every filtered query: with vs without metadata_filter ===
+--- Q1 (Người mua có bao lâu để gửi yêu cầu trả hàng hoặc hoàn tiền?) ---
+  A) filter={'audience': 'buyer'}
+    [1] score=0.8207 doc_id=buyer-return-eligibility-deadline
+    [2] score=0.8070 doc_id=buyer-return-reasons-refund-timeline
+    [3] score=0.7843 doc_id=buyer-return-reasons-refund-timeline
+  B) no filter
+    [1] score=0.8207 doc_id=buyer-return-eligibility-deadline
+    [2] score=0.8070 doc_id=buyer-return-reasons-refund-timeline
+    [3] score=0.7843 doc_id=buyer-return-reasons-refund-timeline
+  => filter changed top-3: False
+
+--- Q2 (Người bán phải làm gì sau khi người mua tạo yêu cầu trả hàng?) ---
+  A) filter={'audience': 'seller'}
+    [1] score=0.7865 doc_id=seller-refund-response-deadline
+    [2] score=0.7823 doc_id=seller-refund-response-deadline
+    [3] score=0.7611 doc_id=seller-refund-response-deadline
+  B) no filter
+    [1] score=0.7865 doc_id=seller-refund-response-deadline
+    [2] score=0.7823 doc_id=seller-refund-response-deadline
+    [3] score=0.7704 doc_id=buyer-return-shipping-methods-fees
+  => filter changed top-3: True
+
+--- Q3 (Khi nào người mua nhận được tiền hoàn sau khi yêu cầu trả hàng được chấp thuận?) ---
+  A) filter={'audience': 'buyer'}
+    [1] score=0.7957 doc_id=buyer-refund-processing-review
+    [2] score=0.7841 doc_id=buyer-refund-processing-review
+    [3] score=0.7825 doc_id=buyer-refund-processing-review
+  B) no filter
+    [1] score=0.7957 doc_id=buyer-refund-processing-review
+    [2] score=0.7841 doc_id=buyer-refund-processing-review
+    [3] score=0.7825 doc_id=buyer-refund-processing-review
+  => filter changed top-3: False
+
+--- Q5 (Ai trả phí vận chuyển hoàn trả và người bán cần làm gì với gói hàng?) ---
+  A) filter={'audience': 'seller'}
+    [1] score=0.8074 doc_id=seller-refund-response-deadline
+    [2] score=0.7800 doc_id=seller-refund-response-deadline
+    [3] score=0.7735 doc_id=seller-refund-response-deadline
+  B) no filter
+    [1] score=0.8074 doc_id=seller-refund-response-deadline
+    [2] score=0.7959 doc_id=buyer-return-shipping-methods-fees
+    [3] score=0.7860 doc_id=buyer-return-shipping-methods-fees
+  => filter changed top-3: True
+
